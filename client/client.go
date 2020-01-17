@@ -19,7 +19,6 @@ var (
 func main() {
 	flag.Parse()
 	cAddr := &net.UDPAddr{IP: net.IPv4zero, Port: *cPort}
-
 	//从服务器获取对方客户端地址
 	dstAddr, err := getDstAddr(cAddr, *server, *cName)
 	if err != nil {
@@ -43,7 +42,6 @@ func main() {
 			log.Println("--->", addr.String(), string(data[:n]))
 		}
 	}
-
 }
 
 func connDstAddr(cAddr *net.UDPAddr, dstAddr *net.UDPAddr) (*net.UDPConn, error) {
@@ -55,7 +53,7 @@ func connDstAddr(cAddr *net.UDPAddr, dstAddr *net.UDPAddr) (*net.UDPConn, error)
 	if _, err = conn.Write([]byte("connect...")); err != nil {
 		log.Println("第一次发送失败", err)
 	}
-	log.Println("与对方客户端发送握手信息成功....稍等我们开始数据传输吧~~")
+	log.Println("与对方客户端打洞成功....")
 	time.Sleep(2 * time.Second)
 	//给对方每过5秒发一次心跳
 	go func() {
