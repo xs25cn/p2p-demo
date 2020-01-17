@@ -42,9 +42,8 @@ func main() {
 		log.Println(err)
 		return
 	}
-	//log.Println("关闭与服务端的连接",remoteAddr)
-	//conn.Close()
-
+	log.Println("关闭与服务端的连接",remoteAddr)
+	conn.Close()
 
 	//分析服务端发来的另一个客户端信息
 	dstAddrArr := strings.Split(string(data[:n]), ":")
