@@ -39,7 +39,8 @@ func main() {
 		log.Println("第一次发送失败", err)
 	}
 	log.Println("与对方客户端打洞成功....")
-	//time.Sleep(2 * time.Second)
+
+	time.Sleep(2 * time.Second)
 	//给对方每过5秒发一次心跳
 	go func() {
 		for {
@@ -68,11 +69,12 @@ func getDstAddr(cAddr *net.UDPAddr, server string, cName string) (*net.UDPAddr, 
 	sAddr := strings.Split(server, ":")
 	sPort, _ := strconv.Atoi(sAddr[1])
 	conn, err := net.DialUDP("udp", cAddr, &net.UDPAddr{IP: net.ParseIP(sAddr[0]), Port: sPort})
-	defer conn.Close()
-
 	if err != nil {
 		return nil, errors.New("连接服务器失败" + err.Error())
 	}
+
+	defer conn.Close()
+
 	//向服务端写消息，如果服务端会应答
 	_, err = conn.Write([]byte(cName))
 	if err != nil {
