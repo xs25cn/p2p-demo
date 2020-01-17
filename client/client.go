@@ -35,6 +35,9 @@ func main() {
 		log.Println(err)
 		return
 	}
+
+	log.Println("与服务端连接并发送消息成功，等待服务器通知另一个客户端的ip地址与端口....")
+
 	data := make([]byte,1024)
 	n, remoteAddr, err := conn.ReadFromUDP(data)
 	fmt.Println("服务端发来信息：",n, remoteAddr, err,string(data))
