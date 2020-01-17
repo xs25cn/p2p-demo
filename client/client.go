@@ -35,9 +35,6 @@ func main() {
 		log.Println(err)
 		return
 	}
-
-	log.Println("与服务端连接并发送消息成功，等待服务器通知另一个客户端的ip地址与端口....")
-
 	data := make([]byte,1024)
 	n, remoteAddr, err := conn.ReadFromUDP(data)
 	fmt.Println("服务端发来信息：",n, remoteAddr, err,string(data))
@@ -74,7 +71,7 @@ func main() {
 	//给对方发数据
 	go func() {
 		for {
-			s := fmt.Sprintf("%s 发来消息 我是：%s", cAddr.String(),*cName)
+			s := fmt.Sprintf("我是：%s", *cName)
 			n, err = conn2.Write([]byte(s))
 			if err != nil {
 				log.Println(err)
@@ -86,11 +83,11 @@ func main() {
 	//输出对方发来的数据
 	for {
 		data := make([]byte, 1024)
-		n, _, err := conn2.ReadFromUDP(data)
+		n, addr, err := conn2.ReadFromUDP(data)
 		if err != nil {
 			log.Println(err)
 		} else {
-			log.Println("--->", string(data[:n]))
+			log.Println("--->",addr.String(), string(data[:n]))
 		}
 	}
 
