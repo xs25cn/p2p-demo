@@ -38,7 +38,7 @@ func main() {
 	if _, err = conn.Write([]byte("connect...")); err != nil {
 		log.Println("第一次发送失败", err)
 	}
-	log.Println("与对方客户端打洞成功....")
+	log.Println("与对方客户端打洞中....")
 
 	time.Sleep(2 * time.Second)
 	//给对方每过5秒发一次心跳
