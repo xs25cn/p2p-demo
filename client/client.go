@@ -92,7 +92,7 @@ func getDstAddr(cAddr *net.UDPAddr, server string, cName string) (*net.UDPAddr, 
 	if err != nil {
 		return nil, errors.New("读取服务器消息失败！" + err.Error())
 	}
-	log.Println("关闭与服务端的连接....\n\n")
+	log.Println("关闭与服务端的连接....")
 
 	//分析服务端发来的另一个客户端信息
 	dstAddrArr := strings.Split(string(data[:n]), ":")
