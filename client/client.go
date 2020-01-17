@@ -52,12 +52,11 @@ func main() {
 
 	log.Printf("本地:%s,对方:%s", cAddr.String(), dstAddr.String())
 
-	//time.Sleep(1 * time.Second)
+	time.Sleep(1 * time.Second)
 	//对方地址获取到后与对方进行连接
 	conn2, err := net.DialUDP("udp", cAddr, dstAddr)
 	if err != nil {
-		log.Println("对方进行连接失败！！！")
-		log.Println(err)
+		log.Println("对方进行连接失败！！！",err)
 		return
 	}
 
