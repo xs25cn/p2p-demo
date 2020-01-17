@@ -71,7 +71,7 @@ func main() {
 	//给对方发数据
 	go func() {
 		for {
-			s := fmt.Sprintf("%s 发来消息 我是：%s", cAddr.String(),*cName)
+			s := fmt.Sprintf("我是：%s", *cName)
 			n, err = conn2.Write([]byte(s))
 			if err != nil {
 				log.Println(err)
@@ -83,11 +83,11 @@ func main() {
 	//输出对方发来的数据
 	for {
 		data := make([]byte, 1024)
-		n, _, err := conn2.ReadFromUDP(data)
+		n, addr, err := conn2.ReadFromUDP(data)
 		if err != nil {
 			log.Println(err)
 		} else {
-			log.Println("--->", string(data[:n]))
+			log.Println("--->",addr.String(), string(data[:n]))
 		}
 	}
 
