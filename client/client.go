@@ -43,7 +43,7 @@ func main() {
 		return
 	}
 	log.Println("关闭与服务端的连接",remoteAddr)
-	conn.Close()
+	//conn.Close()
 
 
 	//分析服务端发来的另一个客户端信息
@@ -53,43 +53,41 @@ func main() {
 
 	log.Printf("本地:%s,对方:%s", cAddr, dstAddr)
 
-	//对方地址获取到后与对方进行连接
-	p2pConn(cAddr, dstAddr)
-}
 
-func p2pConn(srcAddr *net.UDPAddr, dstAddr *net.UDPAddr) {
-	time.Sleep(2 * time.Second)
-	conn, err := net.DialUDP("udp", srcAddr, dstAddr)
+	//对方地址获取到后与对方进行连接
+	conn2, err := net.DialUDP("udp", cAddr, dstAddr)
 	if err != nil {
 		log.Println(err)
 		return
 	}
-	defer conn.Close()
 
 	//向另一方发送一条udp消息(对方的nat设备会丢弃该消息,非法来源),用意是在自身的nat设备打开一条可进入的通道,这样对方就可以发过来udp消息
-	if _, err = conn.Write([]byte("......")); err != nil {
+	if _, err = conn2.Write([]byte("......")); err != nil {
 		log.Println(err)
 		return
 	}
+
+
 	//给对方发数据
 	go func() {
 		for {
-			time.Sleep(time.Second * 5)
-			s := fmt.Sprintf("%s 发来消息 我是：%s", srcAddr,*cName)
-			if _, err = conn.Write([]byte(s)); err != nil {
+			s := fmt.Sprintf("%s 发来消息 我是：%s", cAddr,*cName)
+			if _, err = conn2.Write([]byte(s)); err != nil {
 				log.Println(err)
 			}
+			time.Sleep(time.Second * 1)
 		}
 	}()
 
 	//输出对方发来的数据
 	for {
 		data := make([]byte, 1024)
-		n, _, err := conn.ReadFromUDP(data)
+		n, _, err := conn2.ReadFromUDP(data)
 		if err != nil {
 			log.Println(err)
 		} else {
 			log.Println("--->", string(data[:n]))
 		}
 	}
+
 }
