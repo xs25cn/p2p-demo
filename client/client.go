@@ -37,12 +37,12 @@ func main() {
 	}
 	data := make([]byte,1024)
 	n, remoteAddr, err := conn.ReadFromUDP(data)
-	fmt.Println("读取服务端信息：",n, remoteAddr, err,string(data))
+	fmt.Println("服务端发来信息：",n, remoteAddr, err,string(data))
 	if err != nil {
 		log.Println(err)
 		return
 	}
-	log.Println("关闭与服务端的连接",remoteAddr)
+	//log.Println("关闭与服务端的连接",remoteAddr)
 	//conn.Close()
 
 
