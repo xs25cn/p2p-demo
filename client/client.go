@@ -52,29 +52,32 @@ func main() {
 
 	log.Printf("本地:%s,对方:%s", cAddr, dstAddr)
 
-
+	time.Sleep(1 * time.Second)
 	//对方地址获取到后与对方进行连接
 	conn2, err := net.DialUDP("udp", cAddr, dstAddr)
 	if err != nil {
+		log.Println("对方进行连接失败！！！")
 		log.Println(err)
 		return
 	}
 
 	//向另一方发送一条udp消息(对方的nat设备会丢弃该消息,非法来源),用意是在自身的nat设备打开一条可进入的通道,这样对方就可以发过来udp消息
 	if _, err = conn2.Write([]byte("......")); err != nil {
-		log.Println(err)
+		log.Println("第一次发送失败",err)
 		return
 	}
-
+	time.Sleep(2 * time.Second)
 
 	//给对方发数据
 	go func() {
 		for {
 			s := fmt.Sprintf("%s 发来消息 我是：%s", cAddr,*cName)
-			if _, err = conn2.Write([]byte(s)); err != nil {
-				log.Println(err)
+			n, err = conn2.Write([]byte(s))
+			if err != nil {
+				log.Println("发送消息失败！",err)
 			}
-			time.Sleep(time.Second * 1)
+			fmt.Println("发送消息成功",n)
+			time.Sleep(2 * time.Second)
 		}
 	}()
 
@@ -83,10 +86,11 @@ func main() {
 		data := make([]byte, 1024)
 		n, _, err := conn2.ReadFromUDP(data)
 		if err != nil {
-			log.Println(err)
+			log.Println("没有消息",err)
 		} else {
 			log.Println("--->", string(data[:n]))
 		}
+		time.Sleep(2 * time.Second)
 	}
 
 }
