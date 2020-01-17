@@ -85,7 +85,7 @@ func main() {
 		data := make([]byte, 1024)
 		n, addr, err := conn2.ReadFromUDP(data)
 		if err != nil {
-			log.Println(err)
+			log.Println("读取连接失败",err)
 		} else {
 			log.Println("--->",addr.String(), string(data[:n]))
 		}
