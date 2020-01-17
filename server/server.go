@@ -23,7 +23,6 @@ func main() {
 	for {
 		n, remoteAddr, err := listen.ReadFromUDP(data)
 		fmt.Println("读取监听的udp端口数据", n, remoteAddr, err)
-
 		if err != nil {
 			log.Println(err)
 			return
@@ -35,13 +34,13 @@ func main() {
 			fmt.Println(clients)
 			log.Printf("开始P2P打洞 %s <--> %s 的连接\n服务器写客户端断开后，测试一下客户端之间是否还在通信中...\n", clients[0].String(), clients[1].String())
 			//分别告诉2个客户端对方的地址与可通信的端口
-			c1, err := listen.WriteToUDP([]byte(clients[0].String()), &clients[1])
+			c1, err := listen.WriteToUDP([]byte(clients[1].String()), &clients[0])
 			if err != nil {
 				log.Println("c1", c1, err)
 				return
 			}
 
-			c2, err := listen.WriteToUDP([]byte(clients[1].String()), &clients[0])
+			c2, err := listen.WriteToUDP([]byte(clients[0].String()), &clients[1])
 			if err != nil {
 				log.Println("c2", c2, err)
 				return
